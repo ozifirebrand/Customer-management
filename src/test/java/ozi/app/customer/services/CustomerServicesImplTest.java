@@ -39,6 +39,7 @@ class CustomerServicesImplTest {
 
     @AfterEach
     void tearDown() {
+        customerServices.deleteAllCustomers();
     }
 
     @Test
@@ -50,7 +51,6 @@ class CustomerServicesImplTest {
         assertThat(customerResponseDto.getEmail()).isEqualTo(customerRequestDto.getEmail());
         assertThat(customerResponseDto.getFirstName()).isEqualTo(customerRequestDto.getFirstName());
         assertThat(customerResponseDto.getLastName()).isEqualTo(customerRequestDto.getLastName());
-        log.info(customerResponseDto.getId());
         assertThat(customerResponseDto.getId()).isNotNull();
         assertThat(customerResponseDto.getBillingDetails().getId()).isNotNull();
         assertThat(customerResponseDto.getBillingDetails().getTariff()).isEqualTo(customerRequestDto.getBillingDetails().getTariff());
@@ -59,10 +59,35 @@ class CustomerServicesImplTest {
     }
 
     @Test
-    void findCustomerById() {
+    public void findById() throws CustomerException {
+        //given...
+        //when
+        CustomerResponseDto responseDto = customerServices.findCustomerById(customerResponseDto.getId());
+
+        //assert
+        assertThat(customerResponseDto.getId()).isEqualTo(customerResponseDto.getId());
+        assertThat(customerResponseDto.getEmail()).isEqualTo(customerResponseDto.getEmail());
+        assertThat(customerResponseDto.getFirstName()).isEqualTo(customerResponseDto.getFirstName());
+        assertThat(customerResponseDto.getLastName()).isEqualTo(customerResponseDto.getLastName());
+        assertThat(customerResponseDto.getBillingDetails().getTariff()).isEqualTo(responseDto.getBillingDetails().getTariff());
+        assertThat(customerResponseDto.getBillingDetails().getAccountNumber()).isEqualTo(responseDto.getBillingDetails().getAccountNumber());
+
     }
 
     @Test
-    void findAllCustomers() {
+    void findAllCustomers() throws CustomerException {
+        BillingDetails billingDetails2 = new BillingDetails();
+        billingDetails2.setAccountNumber("1839068394");
+        billingDetails2.setTariff(1.24);
+
+        CustomerRequestDto customerRequestDto2 = new CustomerRequestDto();
+        customerRequestDto2 = new CustomerRequestDto();
+        customerRequestDto2.setEmail("oziomaokoroaf2or@gmail.com");
+        customerRequestDto2.setFirstName("ozioma");
+        customerRequestDto2.setLastName("Okoroafor");
+        customerRequestDto2.setBillingDetails(billingDetails2);
+
+        customerResponseDto = customerServices.createCustomer(customerRequestDto2);
+        assertThat(customerServices.findAllCustomers().size()).isEqualTo(2);
     }
 }
