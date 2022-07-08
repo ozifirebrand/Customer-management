@@ -61,7 +61,11 @@ public class CustomerServicesImpl implements CustomerServices {
     }
 
     @Override
-    public List<Customer> findAllCustomers() {
-        return customerRepository.findAll();
+    public List<Customer> findAllCustomers() throws CustomerException {
+        List<Customer> customers = customerRepository.findAll();
+        if ( customers.isEmpty() ){
+            throw new CustomerException("There are no customers!");
+        }
+        return customers;
     }
 }
