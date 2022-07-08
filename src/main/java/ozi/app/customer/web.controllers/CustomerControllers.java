@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ozi.app.customer.data.dtos.CustomerRequestDto;
 import ozi.app.customer.data.dtos.CustomerResponseDto;
 import ozi.app.customer.data.exceptions.CustomerException;
-import ozi.app.customer.data.models.Customer;
 import ozi.app.customer.services.CustomerServices;
 
 @RestController

@@ -32,13 +32,20 @@ public class CustomerServicesImpl implements CustomerServices {
         Customer customer = new Customer();
         CustomerResponseDto customerResponseDto = new CustomerResponseDto();
         if ( customerRequestDto==null ) throw new CustomerException("Cannot send empty request!");
+        if ( customerRepository.findCustomerByEmail(customerRequestDto.getEmail()) != null ){
+            throw new CustomerException("This user already exists!");
+        }
+        getBillingDetails(customerRequestDto, customer);
+        Customer savedCustomer = customerRepository.save(customer);
+        mapper.map(savedCustomer, customerResponseDto);
+        return customerResponseDto;
+    }
+
+    private void getBillingDetails(CustomerRequestDto customerRequestDto, Customer customer) {
         BillingDetails billingDetails = customerRequestDto.getBillingDetails();
         BillingDetails savedBillingDetails = billingRepository.save(billingDetails);
         mapper.map(customerRequestDto, customer);
         customer.setBillingDetails(savedBillingDetails);
-        Customer savedCustomer = customerRepository.save(customer);
-        mapper.map(savedCustomer, customerResponseDto);
-        return customerResponseDto;
     }
 
     @Override
