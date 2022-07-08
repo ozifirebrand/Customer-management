@@ -14,6 +14,8 @@ import ozi.app.customer.data.repositories.BillingDetailsRepository;
 import ozi.app.customer.data.repositories.CustomerRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CustomerServicesImpl implements CustomerServices {
     @Autowired
@@ -40,12 +42,26 @@ public class CustomerServicesImpl implements CustomerServices {
     }
 
     @Override
-    public CustomerResponseDto findCustomerById(String id) {
-        return null;
+    public CustomerResponseDto findCustomerById(String id) throws CustomerException {
+        CustomerResponseDto responseDto = new CustomerResponseDto();
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        if ( optionalCustomer.isEmpty() ){
+            throw new CustomerException("This customer does not exist!");
+        }
+        Customer customer = optionalCustomer.get();
+        mapper.map(customer, responseDto);
+        return responseDto;
+    }
+
+    @Override
+    public boolean deleteAllCustomers(){
+        customerRepository.deleteAll();
+        billingRepository.deleteAll();
+        return customerRepository.findAll().isEmpty();
     }
 
     @Override
     public List<Customer> findAllCustomers() {
-        return null;
+        return customerRepository.findAll();
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CustomerServices {
     CustomerResponseDto createCustomer(CustomerRequestDto customerRequestDto) throws CustomerException;
-    CustomerResponseDto findCustomerById(String id);
+    CustomerResponseDto findCustomerById(String id) throws CustomerException;
     List<Customer> findAllCustomers();
+    boolean deleteAllCustomers();
 }
