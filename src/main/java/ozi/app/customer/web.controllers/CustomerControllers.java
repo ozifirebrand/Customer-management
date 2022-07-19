@@ -10,10 +10,15 @@ import ozi.app.customer.data.exceptions.CustomerException;
 import ozi.app.customer.services.CustomerServices;
 
 @RestController
-@RequestMapping("api/customer/")
+@RequestMapping("customer/")
 public class CustomerControllers {
     @Autowired
     private CustomerServices customerServices;
+
+    @GetMapping("/{name}")
+    public ResponseEntity<?> helloCustomer(@PathVariable String name){
+        return ResponseEntity.status(HttpStatus.OK).body("Hello "+name);
+    }
     @PostMapping("/create")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerRequestDto customerRequestDto){
         try {
