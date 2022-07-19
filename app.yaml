@@ -1,0 +1,5 @@
+runtime: java17
+handlers:
+  - url: /(.*\..+)$
+    static_dir: whatever
+    secure: always
